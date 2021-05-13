@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: cameraclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "cameraclass.h"
+#include "camera.h"
 
 // The class constructor will initialize the position and rotation of the camera to be at the origin of the scene.
-CameraClass::CameraClass()
+Camera::Camera()
 {
 	m_positionX = 0.0f;
 	m_positionY = 0.0f;
@@ -16,17 +16,17 @@ CameraClass::CameraClass()
 }
 
 
-CameraClass::CameraClass(const CameraClass& other)
+Camera::Camera(const Camera& other)
 {
 }
 
 
-CameraClass::~CameraClass()
+Camera::~Camera()
 {
 }
 
 // The SetPosition and SetRotation functions are used for setting up the position and rotation of the camera.
-void CameraClass::SetPosition(float x, float y, float z)
+void Camera::SetPosition(float x, float y, float z)
 {
 	m_positionX = x;
 	m_positionY = y;
@@ -35,7 +35,7 @@ void CameraClass::SetPosition(float x, float y, float z)
 }
 
 
-void CameraClass::SetRotation(float x, float y, float z)
+void Camera::SetRotation(float x, float y, float z)
 {
 	m_rotationX = x;
 	m_rotationY = y;
@@ -44,13 +44,13 @@ void CameraClass::SetRotation(float x, float y, float z)
 }
 
 // The GetPosition and GetRotation functions return the location and rotation of the camera to calling functions.
-Vector3 CameraClass::GetPosition()
+Vector3 Camera::GetPosition()
 {
 	return Vector3(m_positionX, m_positionY, m_positionZ);
 }
 
 
-Vector3 CameraClass::GetRotation()
+Vector3 Camera::GetRotation()
 {
 	return Vector3(m_rotationX, m_rotationY, m_rotationZ);
 }
@@ -61,7 +61,7 @@ Vector3 CameraClass::GetRotation()
 // Once it is properly rotated, we then translate the camera to the position in 3D space. 
 // With the correct values in the position, lookAt, and up we can then use the D3DXMatrixLookAtLH function to create the view matrix 
 // to represent the current camera rotation and translation.
-void CameraClass::Render()
+void Camera::Render()
 {
 	Vector3 up, position, lookAt;
 	float yaw, pitch, roll;
@@ -106,7 +106,7 @@ void CameraClass::Render()
 
 // After the Render function has been called to create the view matrix we can provide the updated view matrix to calling functions 
 // using this GetViewMatrix function. The view matrix will be one of the three main matrices used in the HLSL vertex shader.
-void CameraClass::GetViewMatrix(Matrix& viewMatrix)
+void Camera::GetViewMatrix(Matrix& viewMatrix)
 {
 	viewMatrix = m_viewMatrix;
 	return;

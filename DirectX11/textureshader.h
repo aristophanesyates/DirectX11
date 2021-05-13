@@ -24,7 +24,7 @@ using namespace DirectX::SimpleMath;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: TextureShaderClass
 ////////////////////////////////////////////////////////////////////////////////
-class TextureShaderClass
+class TextureShader
 {
 private:
 	struct MatrixBufferType
@@ -35,9 +35,9 @@ private:
 	};
 
 public:
-	TextureShaderClass();
-	TextureShaderClass(const TextureShaderClass&);
-	~TextureShaderClass();
+	TextureShader();
+	TextureShader(const TextureShader&);
+	~TextureShader();
 
 	bool Initialize(ID3D11Device*, HWND);
 	void Shutdown();

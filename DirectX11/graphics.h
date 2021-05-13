@@ -16,12 +16,12 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
-#include "d3dclass.h"
-#include "cameraclass.h"
-#include "modelclass.h"
-#include "colorshaderclass.h"
+#include "d3d.h"
+#include "camera.h"
+#include "model.h"
+#include "colorshader.h"
 // The GraphicsClass now includes the new TextureShaderClass header.
-#include "textureshaderclass.h"
+#include "textureshader.h"
 
 // We'll need these four globals to start with.
 /////////////
@@ -36,12 +36,12 @@ const float SCREEN_NEAR = 0.1f;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: GraphicsClass
 ////////////////////////////////////////////////////////////////////////////////
-class GraphicsClass
+class Graphics
 {
 public:
-	GraphicsClass();
-	GraphicsClass(const GraphicsClass&);
-	~GraphicsClass();
+	Graphics();
+	Graphics(const Graphics&);
+	~Graphics();
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
@@ -54,14 +54,14 @@ private:
 	// And the second change is the new private pointer to the D3DClass which we have called m_D3D. 
 	// In case you were wondering I use the prefix m_ on all class variables. That way when I'm coding I can remember quickly 
 	// what variables are members of the class and which are not.
-	D3DClass* m_Direct3D;
-	CameraClass* m_Camera;
-	ModelClass* m_Model;
-	ColorShaderClass* m_ColorShader;
+	D3D* m_Direct3D;
+	Camera* m_Camera;
+	Model* m_Model;
+	ColorShader* m_ColorShader;
 
 	//A new TextureShaderClass private object has been added.
 
-	TextureShaderClass* m_TextureShader;
+	TextureShader* m_TextureShader;
 };
 
 #endif

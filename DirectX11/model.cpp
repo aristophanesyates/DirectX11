@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: modelclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "modelclass.h"
+#include "model.h"
 
 // The class constructor initializes the vertex and index buffer pointers to null.
 // The class constructor now initializes the new texture object to null.
-ModelClass::ModelClass()
+Model::Model()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
@@ -13,19 +13,19 @@ ModelClass::ModelClass()
 }
 
 
-ModelClass::ModelClass(const ModelClass& other)
+Model::Model(const Model& other)
 {
 }
 
 
-ModelClass::~ModelClass()
+Model::~Model()
 {
 }
 
 // The Initialize function will call the initialization functions for the vertex and index buffers.
 // Initialize now takes as input the file name of the .dds texture that the model will be using.
 //bool ModelClass::Initialize(ID3D11Device* device)
-bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* textureFilename)
+bool Model::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* textureFilename)
 {
 	bool result;
 
@@ -50,7 +50,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 }
 
 // The Shutdown function will call the shutdown functions for the vertex and index buffers.
-void ModelClass::Shutdown()
+void Model::Shutdown()
 {
 	// The Shutdown function now calls a new private function to release the texture object that was loaded during initialization.
 	 
@@ -65,7 +65,7 @@ void ModelClass::Shutdown()
 
 // Render is called from the GraphicsClass::Render function. 
 // This function calls RenderBuffers to put the vertex and index buffers on the graphics pipeline so the color shader will be able to render them.
-void ModelClass::Render(ID3D11DeviceContext* deviceContext)
+void Model::Render(ID3D11DeviceContext* deviceContext)
 {
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
@@ -74,13 +74,13 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 }
 
 // GetIndexCount returns the number of indices in the model. The color shader will need this information to draw this model.
-int ModelClass::GetIndexCount()
+int Model::GetIndexCount()
 {
 	return m_indexCount;
 }
 
 // GetTexture returns the model texture resource. The texture shader will need access to this texture to render the model.
-ID3D11ShaderResourceView* ModelClass::GetTexture()
+ID3D11ShaderResourceView* Model::GetTexture()
 {
 	return m_Texture->GetTexture();
 }
@@ -88,7 +88,7 @@ ID3D11ShaderResourceView* ModelClass::GetTexture()
 // The InitializeBuffers function is where we handle creating the vertex and index buffers. 
 // Usually you would read in a model and create the buffers from that data file. 
 // For this tutorial we will just set the points in the vertex and index buffer manually since it is only a single triangle.
-bool ModelClass::InitializeBuffers(ID3D11Device* device)
+bool Model::InitializeBuffers(ID3D11Device* device)
 {
 	VertexType* vertices;
 	unsigned long* indices;
@@ -217,7 +217,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 }
 
 // The ShutdownBuffers function just releases the vertex buffer and index buffer that were created in the InitializeBuffers function.
-void ModelClass::ShutdownBuffers()
+void Model::ShutdownBuffers()
 {
 	// Release the index buffer.
 	if(m_indexBuffer)
@@ -242,7 +242,7 @@ void ModelClass::ShutdownBuffers()
 // This function also defines how those buffers should be drawn such as triangles, lines, fans, and so forth. 
 // In this tutorial we set the vertex buffer and index buffer as active on the input assembler and tell the GPU that the buffers should 
 // be drawn as triangles using the IASetPrimitiveTopology DirectX function.
-void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
+void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
 	unsigned int stride;
 	unsigned int offset;
@@ -266,13 +266,13 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 // LoadTexture is a new private function that will create the texture object and then initialize it with the input file name provided. 
 // This function is called during initialization.
-bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* filename)
+bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* filename)
 {
 	bool result;
 
 
 	// Create the texture object.
-	m_Texture = new TextureClass;
+	m_Texture = new Texture;
 	if (!m_Texture)
 	{
 		return false;
@@ -289,7 +289,7 @@ bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 }
 
 // The ReleaseTexture function will release the texture object that was created and loaded during the LoadTexture function.
-void ModelClass::ReleaseTexture()
+void Model::ReleaseTexture()
 {
 	// Release the texture object.
 	if (m_Texture)

@@ -1,8 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: systemclass.h
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _SYSTEMCLASS_H_
-#define _SYSTEMCLASS_H_
+#pragma once
 
 // Here we define WIN32_LEAN_AND_MEAN. We do this to speed up the build process, it reduces the size of the Win32 header 
 // files by excluding some of the less used APIs.
@@ -22,22 +21,20 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
-#include "inputclass.h"
-#include "graphicsclass.h"
+#include "input.h"
+#include "graphics.h"
 
 // The definition of the class is fairly simple. We see the Initialize, Shutdown, and Run function that was called in main defined here. 
 // There are also some private functions that will be called inside those functions. We have also put a MessageHandler function in the class 
 // to handle the windows system messages that will get sent to the application while it is running. 
 // And finally we have some private variables m_Input and m_Graphics which will be pointers to the two objects that will handle graphics and input.
-////////////////////////////////////////////////////////////////////////////////
-// Class name: SystemClass
-////////////////////////////////////////////////////////////////////////////////
-class SystemClass
+
+class System
 {
 public:
-	SystemClass();
-	SystemClass(const SystemClass&);
-	~SystemClass();
+	System();
+	System(const System&);
+	~System();
 
 	bool Initialize();
 	void Shutdown();
@@ -55,8 +52,8 @@ private:
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;
 
-	InputClass* m_Input;
-	GraphicsClass* m_Graphics;
+	Input* m_Input;
+	Graphics* m_Graphics;
 };
 
 
@@ -69,10 +66,8 @@ static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 /////////////
 // GLOBALS //
 /////////////
-static SystemClass* ApplicationHandle = 0;
+static System* ApplicationHandle = 0;
 
-
-#endif
 
 // The WndProc function and ApplicationHandle pointer are also included in this class file so we can re-direct the windows system 
 // messaging into our MessageHandler function inside the system class.

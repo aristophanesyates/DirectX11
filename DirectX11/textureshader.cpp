@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: textureshaderclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "textureshaderclass.h"
+#include "textureshader.h"
 
 
-TextureShaderClass::TextureShaderClass()
+TextureShader::TextureShader()
 {
 	m_vertexShader = 0;
 	m_pixelShader = 0;
@@ -14,17 +14,17 @@ TextureShaderClass::TextureShaderClass()
 }
 
 
-TextureShaderClass::TextureShaderClass(const TextureShaderClass& other)
+TextureShader::TextureShader(const TextureShader& other)
 {
 }
 
 
-TextureShaderClass::~TextureShaderClass()
+TextureShader::~TextureShader()
 {
 }
 
 
-bool TextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
+bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
@@ -45,7 +45,7 @@ bool TextureShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 }
 
 // The Shutdown function calls the release of the shader variables.
-void TextureShaderClass::Shutdown()
+void TextureShader::Shutdown()
 {
 	// Shutdown the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
@@ -55,7 +55,7 @@ void TextureShaderClass::Shutdown()
 
 // The Render function now takes a new parameter called texture which is the pointer to the texture resource. 
 // This is then sent into the SetShaderParameters function so that the texture can be set in the shader and then used for rendering.
-bool TextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix,
+bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix,
 								Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	bool result;
@@ -75,7 +75,7 @@ bool TextureShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCou
 }
 
 // InitializeShader sets up the texture shader.
-bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -241,7 +241,7 @@ bool TextureShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR
 
 // The ShutdownShader function releases all the variables used in the TextureShaderClass.
 // The ShutdownShader function now releases the new sampler state that was created during initialization.
-void TextureShaderClass::ShutdownShader()
+void TextureShader::ShutdownShader()
 {
 	// Release the sampler state.
 	if(m_sampleState)
@@ -282,7 +282,7 @@ void TextureShaderClass::ShutdownShader()
 }
 
 // OutputShaderErrorMessage writes out errors to a text file if the HLSL shader could not be loaded.
-void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
+void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -320,7 +320,7 @@ void TextureShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND
 // SetShaderParameters function now takes in a pointer to a texture resource and then assigns it to the shader using 
 // the new texture resource pointer. 
 // Note that the texture has to be set before rendering of the buffer occurs.
-bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
+bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
 											 Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
@@ -367,7 +367,7 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext,
 }
 
 // RenderShader calls the shader technique to render the polygons.
-void TextureShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);

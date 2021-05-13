@@ -10,8 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: cameraclass.h
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _CAMERACLASS_H_
-#define _CAMERACLASS_H_
+#pragma once
 
 //////////////
 // INCLUDES //
@@ -26,12 +25,12 @@ using namespace DirectX::SimpleMath;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: CameraClass
 ////////////////////////////////////////////////////////////////////////////////
-class CameraClass
+class Camera
 {
 public:
-	CameraClass();
-	CameraClass(const CameraClass&);
-	~CameraClass();
+	Camera();
+	Camera(const Camera&);
+	~Camera();
 
 	void SetPosition(float, float, float);
 	void SetRotation(float, float, float);
@@ -47,6 +46,4 @@ private:
 	float m_rotationX, m_rotationY, m_rotationZ;
 	Matrix m_viewMatrix;
 };
-
-#endif
 

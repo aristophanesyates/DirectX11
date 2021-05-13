@@ -19,12 +19,12 @@ using namespace DirectX;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: TextureClass
 ////////////////////////////////////////////////////////////////////////////////
-class TextureClass
+class Texture
 {
 public:
-	TextureClass();
-	TextureClass(const TextureClass&);
-	~TextureClass();
+	Texture();
+	Texture(const Texture&);
+	~Texture();
 
 	// The first two functions will load a texture from a given file name and unload that texture when it is no longer needed.
 	bool Initialize(ID3D11Device*, ID3D11DeviceContext* deviceContext, WCHAR*); // <--- passing in device context for CreateDDSTextureFromFile()

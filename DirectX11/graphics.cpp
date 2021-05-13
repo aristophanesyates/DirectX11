@@ -5,12 +5,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: graphicsclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "graphicsclass.h"
+#include "graphics.h"
 
 // So the very first change is in the class constructor.
 // Here we initialize the pointer to null for safety reasons as we do with all class pointers.
 // The first change to GraphicsClass is initializing the camera, model, and color shader objects in the class constructor to null.
-GraphicsClass::GraphicsClass()
+Graphics::Graphics()
 {
 	m_Direct3D = 0;
 	m_Camera = 0;
@@ -20,11 +20,11 @@ GraphicsClass::GraphicsClass()
 }
 
 
-GraphicsClass::GraphicsClass(const GraphicsClass& other)
+Graphics::Graphics(const Graphics& other)
 {
 }
 
-GraphicsClass::~GraphicsClass()
+Graphics::~Graphics()
 {
 }
 
@@ -36,12 +36,12 @@ GraphicsClass::~GraphicsClass()
 // We'll go into more detail about that once we look at the d3dclass.cpp file.
 // The Initialize function has also been updated to create and initialize the three new objects.
 
-bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
 
 	// Create the Direct3D object.
-	m_Direct3D = new D3DClass;
+	m_Direct3D = new D3D;
 	if(!m_Direct3D)
 	{
 		return false;
@@ -56,7 +56,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the camera object.
-	m_Camera = new CameraClass;
+	m_Camera = new Camera;
 	if (!m_Camera)
 	{
 		return false;
@@ -66,7 +66,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 
 	// Create the model object.
-	m_Model = new ModelClass;
+	m_Model = new Model;
 	if (!m_Model)
 	{
 		return false;
@@ -88,7 +88,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// The new TextureShaderClass object is createdand initialized.
 
 	// Create the texture shader object.
-	m_TextureShader = new TextureShaderClass;
+	m_TextureShader = new TextureShader;
 	if (!m_TextureShader)
 	{
 		return false;
@@ -103,7 +103,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Create the color shader object.
-	m_ColorShader = new ColorShaderClass;
+	m_ColorShader = new ColorShader;
 	if (!m_ColorShader)
 	{
 		return false;
@@ -127,7 +127,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 // That is why it is important to set all the pointers to null in the class constructor. 
 // If it does find the pointer has been initialized then it will attempt to shut down the D3DClass and then clean up the pointer afterwards.
 // Shutdown is also updated to shutdown and release the three new objects.
-void GraphicsClass::Shutdown()
+void Graphics::Shutdown()
 {
 	// The TextureShaderClass object is also released in the Shutdown function.
 
@@ -174,7 +174,7 @@ void GraphicsClass::Shutdown()
 }
 
 // The Frame function has been updated so that it now calls the Render function each frame.
-bool GraphicsClass::Frame()
+bool Graphics::Frame()
 {
 	bool result;
 
@@ -202,7 +202,7 @@ bool GraphicsClass::Frame()
 // for positioning each vertex. 
 // The green triangle is now drawn to the back buffer. 
 // With that the scene is complete and we call EndScene to display it to the screen.
-bool GraphicsClass::Render()
+bool Graphics::Render()
 {
 	Matrix viewMatrix, projectionMatrix, worldMatrix;
 	bool result;

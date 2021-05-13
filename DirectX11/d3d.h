@@ -39,12 +39,12 @@ using namespace DirectX::SimpleMath;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: D3DClass
 ////////////////////////////////////////////////////////////////////////////////
-class D3DClass
+class D3D
 {
 public:
-	D3DClass();
-	D3DClass(const D3DClass&);
-	~D3DClass();
+	D3D();
+	D3D(const D3D&);
+	~D3D();
 
 	bool Initialize(int, int, bool, HWND, bool, float, float);
 	void Shutdown();

@@ -25,7 +25,7 @@ using namespace DirectX::SimpleMath;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: ColorShaderClass
 ////////////////////////////////////////////////////////////////////////////////
-class ColorShaderClass
+class ColorShader
 {
 private:
 
@@ -40,9 +40,9 @@ private:
 	};
 
 public:
-	ColorShaderClass();
-	ColorShaderClass(const ColorShaderClass&);
-	~ColorShaderClass();
+	ColorShader();
+	ColorShader(const ColorShader&);
+	~ColorShader();
 
 	// The functions here handle initializing and shutdown of the shader. 
 	// The render function sets the shader parameters and then draws the prepared model vertices using the shader.

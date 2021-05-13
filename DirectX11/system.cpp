@@ -1,14 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: systemclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "systemclass.h"
+#include "system.h"
 
 // In the class constructor I initialize the object pointers to null. This is important because if the initialization of 
 // these objects fail then the Shutdown function further on will attempt to clean up those objects. 
 // If the objects are not null then it assumes they were valid created objects and that they need to be cleaned up. 
 // It is also good practice to initialize all pointers and 
 // variables to null in your applications. Some release builds will fail if you do not do so.
-SystemClass::SystemClass()
+System::System()
 {
 	m_Input = 0;
 	m_Graphics = 0;
@@ -16,7 +16,7 @@ SystemClass::SystemClass()
 
 // Here I create an empty copy constructor and empty class destructor. In this class I don't have need of them but if not 
 // defined some compilers will generate them for you, and in which case I'd rather they be empty.
-SystemClass::SystemClass(const SystemClass& other)
+System::System(const System& other)
 {
 }
 
@@ -24,14 +24,14 @@ SystemClass::SystemClass(const SystemClass& other)
 // in the Shutdown function you will see further down. The reason being is that I don't trust it to be called.
 // Certain windows functions like ExitThread() are known for not calling your class destructors resulting in memory leaks.
 // You can of course call safer versions of these functions now but I'm just being careful when programming on windows.
-SystemClass::~SystemClass()
+System::~System()
 {
 }
 
 // The following Initialize function does all the setup for the application. It first calls InitializeWindows which will create
 // the window for our application to use. It also creates and initializes both the input and graphics objects that the application 
 // will use for handling user input and rendering graphics to the screen.
-bool SystemClass::Initialize()
+bool System::Initialize()
 {
 	int screenWidth, screenHeight;
 	bool result;
@@ -44,7 +44,7 @@ bool SystemClass::Initialize()
 	InitializeWindows(screenWidth, screenHeight);
 
 	// Create the input object.  This object will be used to handle reading the keyboard input from the user.
-	m_Input = new InputClass;
+	m_Input = new Input;
 	if(!m_Input)
 	{
 		return false;
@@ -54,7 +54,7 @@ bool SystemClass::Initialize()
 	m_Input->Initialize();
 
 	// Create the graphics object.  This object will handle rendering all the graphics for this application.
-	m_Graphics = new GraphicsClass;
+	m_Graphics = new Graphics;
 	if(!m_Graphics)
 	{
 		return false;
@@ -72,7 +72,7 @@ bool SystemClass::Initialize()
 
 // The Shutdown function does the clean up. It shuts down and releases everything associated with the graphics and input object. 
 // As well it also shuts down the window and cleans up the handles associated with it.
-void SystemClass::Shutdown()
+void System::Shutdown()
 {
 	// Release the graphics object.
 	if(m_Graphics)
@@ -105,7 +105,7 @@ void SystemClass::Shutdown()
 //		process application loop
 //		check if user wanted to quit during the frame processing
 //
-void SystemClass::Run()
+void System::Run()
 {
 	MSG msg;
 	bool done, result;
@@ -148,7 +148,7 @@ void SystemClass::Run()
 // The following Frame function is where all the processing for our application is done. So far it is fairly simple, we check the 
 // input object to see if the user has pressed escape and wants to quit. If they don't want to quit then we call the graphics object 
 // to do its frame processing which will render the graphics for that frame. As the application grows we'll place more code inside here.
-bool SystemClass::Frame()
+bool System::Frame()
 {
 	bool result;
 
@@ -172,7 +172,7 @@ bool SystemClass::Frame()
 // The MessageHandler function is where we direct the windows system messages into. This way we can listen for certain information 
 // that we are interested in. Currently we will just read if a key is pressed or if a key is released and pass that information on 
 // to the input object. All other information we will pass back to the windows default message handler.
-LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
 	switch(umsg)
 	{
@@ -208,7 +208,7 @@ LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam
 // make a 800x600 window in the middle of the screen. I placed the FULL_SCREEN global variable at the top of the 
 // graphicsclass.h file in case you want to modify it. It will make sense later why I placed the global in that file 
 // instead of the header for this file.
-void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
+void System::InitializeWindows(int& screenWidth, int& screenHeight)
 {
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
@@ -290,7 +290,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 }
 
 // ShutdownWindows does just that. It returns the screen settings back to normal and releases the window and the handles associated with it.
-void SystemClass::ShutdownWindows()
+void System::ShutdownWindows()
 {
 	// Show the mouse cursor.
 	ShowCursor(true);

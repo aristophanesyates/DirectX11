@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: colorshaderclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "colorshaderclass.h"
+#include "colorshader.h"
 
 // As usual the class constructor initializes all the private pointers in the class to null.
-ColorShaderClass::ColorShaderClass()
+ColorShader::ColorShader()
 {
 	m_vertexShader = 0;
 	m_pixelShader = 0;
@@ -13,18 +13,18 @@ ColorShaderClass::ColorShaderClass()
 }
 
 
-ColorShaderClass::ColorShaderClass(const ColorShaderClass& other)
+ColorShader::ColorShader(const ColorShader& other)
 {
 }
 
 
-ColorShaderClass::~ColorShaderClass()
+ColorShader::~ColorShader()
 {
 }
 
 // The Initialize function will call the initialization function for the shaders. 
 // We pass in the name of the HLSL shader files, in this tutorial they are named VertexShader.hlsl and PixelShader.hlsl.
-bool ColorShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
+bool ColorShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
@@ -43,7 +43,7 @@ bool ColorShaderClass::Initialize(ID3D11Device* device, HWND hwnd)
 }
 
 // The Shutdown function will call the shutdown of the shader.
-void ColorShaderClass::Shutdown()
+void ColorShader::Shutdown()
 {
 	// Shutdown the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
@@ -53,7 +53,7 @@ void ColorShaderClass::Shutdown()
 
 // Render will first set the parameters inside the shader using the SetShaderParameters function. 
 // Once the parameters are set it then calls RenderShader to draw the green triangle using the HLSL shader.
-bool ColorShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
+bool ColorShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix)
 {
 	bool result;
 
@@ -74,7 +74,7 @@ bool ColorShaderClass::Render(ID3D11DeviceContext* deviceContext, int indexCount
 // This function is what actually loads the shader files and makes it usable to DirectX and the GPU. 
 // You will also see the setup of the layout and how the vertex buffer data is going to look on the graphics pipeline in the GPU. 
 // The layout will need to match the VertexType in the modelclass.h file as well as the one defined in the color.vs file.
-bool ColorShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+bool ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -231,7 +231,7 @@ bool ColorShaderClass::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* 
 }
 
 // ShutdownShader releases the four interfaces that were setup in the InitializeShader function.
-void ColorShaderClass::ShutdownShader()
+void ColorShader::ShutdownShader()
 {
 	// Release the matrix constant buffer.
 	if(m_matrixBuffer)
@@ -265,7 +265,7 @@ void ColorShaderClass::ShutdownShader()
 }
 
 // The OutputShaderErrorMessage writes out error messages that are generating when compiling either vertex shaders or pixel shaders.
-void ColorShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
+void ColorShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -302,7 +302,7 @@ void ColorShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND h
 // The SetShaderVariables function exists to make setting the global variables in the shader easier. 
 // The matrices used in this function are created inside the GraphicsClass, after which this function is called to send them from there 
 // into the vertex shader during the Render function call.
-bool ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
+bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
 	Matrix projectionMatrix)
 {
 	HRESULT result;
@@ -355,7 +355,7 @@ bool ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* deviceContext, M
 // The second step is to set the vertex shader and pixel shader we will be using to render this vertex buffer.
 // Once the shaders are set we render the triangle by calling the DrawIndexed DirectX 11 function using the D3D device context.
 // Once this function is called it will render the green triangle.
-void ColorShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void ColorShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);

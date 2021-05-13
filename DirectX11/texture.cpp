@@ -1,27 +1,27 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: textureclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "textureclass.h"
+#include "texture.h"
 
 // The class constructor will initialize the texture shader resource pointer to null.
-TextureClass::TextureClass()
+Texture::Texture()
 {
 	m_texture = 0;
 }
 
 
-TextureClass::TextureClass(const TextureClass& other)
+Texture::Texture(const Texture& other)
 {
 }
 
 
-TextureClass::~TextureClass()
+Texture::~Texture()
 {
 }
 
 // Initialize takes in the Direct3D device and file name of the texture and then loads the texture file into the shader resource 
 // variable called m_texture. The texture can now be used to render with.
-bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* filename)			// <--- pass in device context.
+bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* filename)			// <--- pass in device context.
 {
 	HRESULT result;
 
@@ -37,7 +37,7 @@ bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceC
 }
 
 // The Shutdown function releases the texture resource if it has been loaded and then sets the pointer to null.
-void TextureClass::Shutdown()
+void Texture::Shutdown()
 {
 	// Release the texture resource.
 	if(m_texture)
@@ -51,7 +51,7 @@ void TextureClass::Shutdown()
 
 // GetTexture is the function that is called by other objects that need access to the texture shader resource so that they can 
 // use the texture for rendering.
-ID3D11ShaderResourceView* TextureClass::GetTexture()
+ID3D11ShaderResourceView* Texture::GetTexture()
 {
 	return m_texture;
 }

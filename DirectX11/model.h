@@ -21,7 +21,7 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
-#include "textureclass.h"
+#include "texture.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -29,7 +29,7 @@ using namespace DirectX::SimpleMath;
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: ModelClass
 ////////////////////////////////////////////////////////////////////////////////
-class ModelClass
+class Model
 {
 private:
 	// Here is the definition of our vertex type that will be used with the vertex buffer in this ModelClass. 
@@ -49,9 +49,9 @@ private:
 	};
 
 public:
-	ModelClass();
-	ModelClass(const ModelClass&);
-	~ModelClass();
+	Model();
+	Model(const Model&);
+	~Model();
 
 	// The functions here handle initializing and shutdown of the model's vertex and index buffers. 
 	// The Render function puts the model geometry on the video card to prepare it for drawing by the color shader.
@@ -83,7 +83,7 @@ private:
 	int m_vertexCount, m_indexCount;
 
 	// The m_Texture variable is used for loading, releasing, and accessing the texture resource for this model.
-	TextureClass* m_Texture;
+	Texture* m_Texture;
 };
 
 #endif

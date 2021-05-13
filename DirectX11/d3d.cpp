@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: d3dclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "d3dclass.h"
+#include "d3d.h"
 
 // So like most classes we begin with initializing all the member pointers to null in the class constructor. 
 // All pointers from the header file have all been accounted for here.
-D3DClass::D3DClass()
+D3D::D3D()
 {
 	m_swapChain = 0;
 	m_device = 0;
@@ -18,12 +18,12 @@ D3DClass::D3DClass()
 }
 
 
-D3DClass::D3DClass(const D3DClass& other)
+D3D::D3D(const D3D& other)
 {
 }
 
 
-D3DClass::~D3DClass()
+D3D::~D3D()
 {
 }
 
@@ -39,7 +39,7 @@ D3DClass::~D3DClass()
 // creating the window with the correct settings.
 // The screenDepth and screen Near variables are the depth settings for our 3D environment that will be rendered in the window.
 // The vsync variable indicates if we want Direct3D to render according to the users monitor refresh rate or to just go as fast as possible.
-bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, 
+bool D3D::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, 
 						  float screenDepth, float screenNear)
 {
 	HRESULT result;
@@ -470,7 +470,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 // However before doing that I put in a call to force the swap chain to go into windowed mode first before releasing any pointers. 
 // If this is not done and you try to release the swap chain in full screen mode it will throw some exceptions. 
 // So to avoid that happening we just always force windowed mode before shutting down Direct3D.
-void D3DClass::Shutdown()
+void D3D::Shutdown()
 {
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
 	if(m_swapChain)
@@ -533,7 +533,7 @@ void D3DClass::Shutdown()
 // BeginScene will be called whenever we are going to draw a new 3D scene at the beginning of each frame. 
 // All it does is initializes the buffers so they are blank and ready to be drawn to. 
 // The other function is Endscene, it tells the swap chain to display our 3D scene once all the drawing has completed at the end of each frame.
-void D3DClass::BeginScene(float red, float green, float blue, float alpha)
+void D3D::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4];
 
@@ -553,7 +553,7 @@ void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 }
 
 
-void D3DClass::EndScene()
+void D3D::EndScene()
 {
 	// Present the back buffer to the screen since rendering is complete.
 	if(m_vsync_enabled)
@@ -572,13 +572,13 @@ void D3DClass::EndScene()
 
 // These next functions simply get pointers to the Direct3D device and the Direct3D device context. 
 // These helper functions will be called by the framework often.
-ID3D11Device* D3DClass::GetDevice()
+ID3D11Device* D3D::GetDevice()
 {
 	return m_device;
 }
 
 
-ID3D11DeviceContext* D3DClass::GetDeviceContext()
+ID3D11DeviceContext* D3D::GetDeviceContext()
 {
 	return m_deviceContext;
 }
@@ -586,21 +586,21 @@ ID3D11DeviceContext* D3DClass::GetDeviceContext()
 // The next three helper functions give copies of the projection, world, and orthographic matrices to calling functions. 
 // Most shaders will need these matrices for rendering so there needed to be an easy way for outside objects to get a copy of them. 
 // We won't call these functions in this tutorial but I'm just explaining why they are in the code.
-void D3DClass::GetProjectionMatrix(Matrix& projectionMatrix)
+void D3D::GetProjectionMatrix(Matrix& projectionMatrix)
 {
 	projectionMatrix = m_projectionMatrix;
 	return;
 }
 
 
-void D3DClass::GetWorldMatrix(Matrix& worldMatrix)
+void D3D::GetWorldMatrix(Matrix& worldMatrix)
 {
 	worldMatrix = m_worldMatrix;
 	return;
 }
 
 
-void D3DClass::GetOrthoMatrix(Matrix& orthoMatrix)
+void D3D::GetOrthoMatrix(Matrix& orthoMatrix)
 {
 	orthoMatrix = m_orthoMatrix;
 	return;
@@ -608,7 +608,7 @@ void D3DClass::GetOrthoMatrix(Matrix& orthoMatrix)
 
 // The last helper function returns by reference the name of the video card and the amount of dedicated memory on the video card. 
 // Knowing the video card name and amount of video memory can help in debugging on different configurations.
-void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
+void D3D::GetVideoCardInfo(char* cardName, int& memory)
 {
 	strcpy_s(cardName, 128, m_videoCardDescription);
 	memory = m_videoCardMemory;
