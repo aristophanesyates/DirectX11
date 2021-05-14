@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: textureshaderclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "textureshader.h"
+#include "shader.h"
 
 
-TextureShader::TextureShader()
+Shader::Shader()
 {
 	m_vertexShader = 0;
 	m_pixelShader = 0;
@@ -14,27 +14,25 @@ TextureShader::TextureShader()
 }
 
 
-TextureShader::TextureShader(const TextureShader& other)
+Shader::Shader(const Shader& other)
 {
 }
 
 
-TextureShader::~TextureShader()
+Shader::~Shader()
 {
 }
 
 
-bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd)
+bool Shader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
-
-	// The new texture.vs and texture.ps HLSL files are loaded for this shader.
 
 	// Initialize the vertex and pixel shaders.
 	WCHAR* vs_filepath = (WCHAR*)malloc(sizeof(WCHAR) * 64);
 	WCHAR* ps_filepath = (WCHAR*)malloc(sizeof(WCHAR) * 64);
-	std::copy(std::begin(L"vs_texture.hlsl"), std::end(L"vs_texture.hlsl"), vs_filepath);
-	std::copy(std::begin(L"ps_texture.hlsl"), std::end(L"ps_texture.hlsl"), ps_filepath);
+	std::copy(std::begin(L"VertexShader.hlsl"), std::end(L"VertexShader.hlsl"), vs_filepath);
+	std::copy(std::begin(L"PixelShader.hlsl"), std::end(L"PixelShader.hlsl"), ps_filepath);
 	result = InitializeShader(device, hwnd, vs_filepath, ps_filepath);
 	if(!result)
 	{
@@ -45,7 +43,7 @@ bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd)
 }
 
 // The Shutdown function calls the release of the shader variables.
-void TextureShader::Shutdown()
+void Shader::Shutdown()
 {
 	// Shutdown the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
@@ -55,7 +53,7 @@ void TextureShader::Shutdown()
 
 // The Render function now takes a new parameter called texture which is the pointer to the texture resource. 
 // This is then sent into the SetShaderParameters function so that the texture can be set in the shader and then used for rendering.
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix,
+bool Shader::Render(ID3D11DeviceContext* deviceContext, int indexCount, Matrix worldMatrix, Matrix viewMatrix,
 								Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	bool result;
@@ -75,7 +73,7 @@ bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, M
 }
 
 // InitializeShader sets up the texture shader.
-bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+bool Shader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -163,9 +161,9 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[0].InstanceDataStepRate = 0;
 
-	polygonLayout[1].SemanticName = "TEXCOORD";
+	polygonLayout[1].SemanticName = "COLOR";
 	polygonLayout[1].SemanticIndex = 0;
-	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	polygonLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	polygonLayout[1].InputSlot = 0;
 	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -241,7 +239,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 
 // The ShutdownShader function releases all the variables used in the TextureShaderClass.
 // The ShutdownShader function now releases the new sampler state that was created during initialization.
-void TextureShader::ShutdownShader()
+void Shader::ShutdownShader()
 {
 	// Release the sampler state.
 	if(m_sampleState)
@@ -282,7 +280,7 @@ void TextureShader::ShutdownShader()
 }
 
 // OutputShaderErrorMessage writes out errors to a text file if the HLSL shader could not be loaded.
-void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
+void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
 	unsigned long bufferSize, i;
@@ -320,7 +318,7 @@ void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd
 // SetShaderParameters function now takes in a pointer to a texture resource and then assigns it to the shader using 
 // the new texture resource pointer. 
 // Note that the texture has to be set before rendering of the buffer occurs.
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
+bool Shader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
 											 Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
@@ -367,7 +365,7 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matr
 }
 
 // RenderShader calls the shader technique to render the polygons.
-void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void Shader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the vertex input layout.
 	deviceContext->IASetInputLayout(m_layout);

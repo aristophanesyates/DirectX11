@@ -33,16 +33,13 @@
     <ClCompile Include="camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="colorshader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="textureshader.cpp">
+    <ClCompile Include="shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,30 +59,21 @@
     <ClInclude Include="camera.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="colorshader.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="textureshader.h">
+    <ClInclude Include="shader.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ps_color.hlsl">
+    <FxCompile Include="PixelShader.hlsl">
       <Filter>Source Files</Filter>
     </FxCompile>
-    <FxCompile Include="ps_texture.hlsl">
-      <Filter>Source Files</Filter>
-    </FxCompile>
-    <FxCompile Include="vs_color.hlsl">
-      <Filter>Source Files</Filter>
-    </FxCompile>
-    <FxCompile Include="vs_texture.hlsl">
+    <FxCompile Include="VertexShader.hlsl">
       <Filter>Source Files</Filter>
     </FxCompile>
   </ItemGroup>

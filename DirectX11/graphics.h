@@ -19,9 +19,8 @@
 #include "d3d.h"
 #include "camera.h"
 #include "model.h"
-#include "colorshader.h"
 // The GraphicsClass now includes the new TextureShaderClass header.
-#include "textureshader.h"
+#include "shader.h"
 
 // We'll need these four globals to start with.
 /////////////
@@ -57,11 +56,10 @@ private:
 	D3D* m_Direct3D;
 	Camera* m_Camera;
 	Model* m_Model;
-	ColorShader* m_ColorShader;
 
 	//A new TextureShaderClass private object has been added.
 
-	TextureShader* m_TextureShader;
+	Shader* m_Shader;
 };
 
 #endif

@@ -34,19 +34,12 @@ class Model
 private:
 	// Here is the definition of our vertex type that will be used with the vertex buffer in this ModelClass. 
 	// Also take note that this typedef must match the layout in the ColorShaderClass that will be looked at later in the tutorial.
-	/*struct VertexType
-	{
-		Vector3 position;
-	    Vector4 color;
-	};*/
-
-	// The VertexType has replaced the color component with a texture coordinate component. 
-	// The texture coordinate is now replacing the green color that was used in the previous tutorial.
 	struct VertexType
 	{
 		Vector3 position;
-		Vector2 texture;
+	    Vector4 color;
 	};
+
 
 public:
 	Model();

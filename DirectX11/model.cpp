@@ -131,24 +131,16 @@ bool Model::InitializeBuffers(ID3D11Device* device)
 	// In this tutorial I'm just doing a direct mapping for simplicity reasons.
 
 	// Load the vertex array with data.
-	//vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	//vertices[0].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-	//vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);  // Top middle.
-	//vertices[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-	//vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	//vertices[2].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-
-	// Load the vertex array with data.
 	vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].texture = Vector2(0.0f, 1.0f);
+	vertices[0].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].texture = Vector2(0.5f, 0.0f);
+	vertices[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].texture = Vector2(1.0f, 1.0f);
+	vertices[2].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+
+
 
 	// Load the index array with data.
 	indices[0] = 0;  // Bottom left.
@@ -269,7 +261,6 @@ void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, WCHAR* filename)
 {
 	bool result;
-
 
 	// Create the texture object.
 	m_Texture = new Texture;
