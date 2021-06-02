@@ -21,6 +21,7 @@
 #include "model.h"
 // The GraphicsClass now includes the new TextureShaderClass header.
 #include "shader.h"
+#include "OrthoMesh.h"
 
 // We'll need these four globals to start with.
 /////////////
@@ -60,6 +61,14 @@ private:
 	//A new TextureShaderClass private object has been added.
 
 	Shader* m_Shader;
+
+
+	///
+	ID3D11Texture2D* pTexture;
+	ID3D11ShaderResourceView* fluidResourceView;
+	const int simulationSize = 128;
+	OrthoMesh* ortho;
+	///
 };
 
 #endif

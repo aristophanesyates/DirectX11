@@ -19,22 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseMesh.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="d3d.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="OrthoMesh.cpp" />
     <ClCompile Include="system.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseMesh.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="d3d.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="OrthoMesh.h" />
     <ClInclude Include="system.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="shader.h" />

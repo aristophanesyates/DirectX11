@@ -318,8 +318,7 @@ void Shader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR
 // SetShaderParameters function now takes in a pointer to a texture resource and then assigns it to the shader using 
 // the new texture resource pointer. 
 // Note that the texture has to be set before rendering of the buffer occurs.
-bool Shader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix,
-											 Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
+bool Shader::SetShaderParameters(ID3D11DeviceContext* deviceContext, Matrix worldMatrix, Matrix viewMatrix, Matrix projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
     D3D11_MAPPED_SUBRESOURCE mappedResource;

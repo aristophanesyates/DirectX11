@@ -16,6 +16,7 @@ Graphics::Graphics()
 	m_Camera = 0;
 	m_Model = 0;
 	m_Shader = 0;
+
 }
 
 
@@ -101,6 +102,40 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	///
+
+	D3D11_TEXTURE2D_DESC textureDesc;
+	ZeroMemory(&textureDesc, sizeof(textureDesc));
+	textureDesc.Width = simulationSize;
+	textureDesc.Height = simulationSize;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DYNAMIC;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	textureDesc.MiscFlags = 0;
+
+	ID3D11Device* pd3dDevice;
+	m_Direct3D->GetDeviceContext()->GetDevice(&pd3dDevice);
+	this->pTexture = 0;
+
+	pd3dDevice->CreateTexture2D(&textureDesc, 0, &pTexture);
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	srvDesc.Format = textureDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = 1;
+	pd3dDevice->CreateShaderResourceView(pTexture, &srvDesc, &fluidResourceView);
+
+	ortho = new OrthoMesh(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), 256, 256);
+
+	///
+
 	return true;
 }
 
@@ -183,6 +218,34 @@ bool Graphics::Render()
 	Matrix viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
 
+	///
+
+	D3D11_MAPPED_SUBRESOURCE texmap;
+	m_Direct3D->GetDeviceContext()->Map(pTexture, 0, D3D11_MAP_WRITE_DISCARD, 0, &texmap);
+	float* pR32G32B32A32 = (float*)texmap.pData;
+	//ZeroMemory(&pR32G32B32A32, sizeof(XMVECTOR) * simulationSize * simulationSize);
+
+	float asdf[128][128];
+
+	memset(asdf, 1.0f, sizeof(float) * 128 * 128);
+
+	for (int i = 0; i < simulationSize * simulationSize; i++)
+	{
+		float* x = &asdf[0][0];
+		pR32G32B32A32[i * 4 + 0] = x[i];
+		pR32G32B32A32[i * 4 + 1] = x[i];
+		pR32G32B32A32[i * 4 + 2] = x[i];
+		pR32G32B32A32[i * 4 + 3] = x[i];
+	}
+	m_Direct3D->GetDeviceContext()->Unmap(pTexture, 0);
+
+
+	//ID3D11Resource
+	m_Shader->SetShaderParameters(m_Direct3D->GetDeviceContext(), Matrix::Identity, Matrix::Identity, Matrix::Identity, fluidResourceView);
+	//m_Shader->compute(renderer->getDeviceContext(), 32, 32, 1);
+	//m_Shader->unbind(renderer->getDeviceContext());
+
+	///
 
 	// Clear the buffers to begin the scene.
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -190,24 +253,30 @@ bool Graphics::Render()
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
 
+	ortho->sendData(m_Direct3D->GetDeviceContext());
+
+	
+
 	// Get the world, view, and projection matrices from the camera and d3d objects.
 	m_Camera->GetViewMatrix(viewMatrix);
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
+	m_Shader->SetShaderParameters(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, fluidResourceView);
+	m_Shader->Render(m_Direct3D->GetDeviceContext(), ortho->getIndexCount(), worldMatrix, viewMatrix, projectionMatrix, fluidResourceView);
+
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_Direct3D->GetDeviceContext());
+	//m_Model->Render(m_Direct3D->GetDeviceContext());
 
 	// The texture shader is called now instead of the color shader to render the model.Notice it also takes the texture resource pointer
 	// from the model so the texture shader has access to the texture from the model object.
 
 	// Render the model using the texture shader.
-	result = m_Shader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-									 m_Model->GetTexture());
-	if (!result)
-	{
-		return false;
-	}
+	//result = m_Shader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());
+	//if (!result)
+	//{
+	//	return false;
+	//}
 
 	// Present the rendered scene to the screen.
 	m_Direct3D->EndScene();
