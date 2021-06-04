@@ -172,7 +172,7 @@ bool System::Frame()
 // The MessageHandler function is where we direct the windows system messages into. This way we can listen for certain information 
 // that we are interested in. Currently we will just read if a key is pressed or if a key is released and pass that information on 
 // to the input object. All other information we will pass back to the windows default message handler.
-LRESULT CALLBACK System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)						// why CALLBACK...?
+LRESULT CALLBACK System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
 	switch(umsg)
 	{
